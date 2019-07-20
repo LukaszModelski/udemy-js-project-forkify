@@ -43,6 +43,23 @@ const renderSingleRecipe = recipe => {
 }
 
 export const renderRecipes = recipes => {
-    // console.log(recipes);
     recipes.forEach(renderSingleRecipe); // renderSingleRecipe is a callback function in this case. So every single element from forEach loop will be automaticaly passed to the function.
+}
+
+export const rederSpinner = container => {
+    const spinner = `
+        <div class="loader">
+            <svg>
+                <use href="img/icons.svg#icon-cw"></use>
+            </svg>
+        </div>
+        `
+    ;
+    container.insertAdjacentHTML('afterbegin', spinner);
+}
+
+export const clearSpinner = container => {
+    const spinner = document.querySelector('.' + container.className + ' .loader');
+    console.log(spinner);
+    container.removeChild(spinner);
 }

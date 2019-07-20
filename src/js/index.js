@@ -22,9 +22,16 @@ const controlSearch = async () => {
     // prepare UI for results TODO
     searchView.clearInput();
     searchView.clearSearchedRecipes();
+
+    // render spinner
+    // console.log(elements.resultsContainer);
+    searchView.rederSpinner(elements.resultsContainer);
     
     // search for recipes TODO
     await state.search.searchRecipes();
+
+    // clear spinner
+    searchView.clearSpinner(elements.resultsContainer);
     
     // render results to UI TODO
     searchView.renderRecipes(state.search.recipes);
