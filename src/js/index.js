@@ -34,11 +34,21 @@ const controlSearch = async () => {
     searchView.clearSpinner(elements.resultsContainer);
     
     // render results to UI TODO
-    searchView.renderRecipes(state.search.recipes);
+    searchView.renderRecipes(state.search.recipes, 10, 1); // recipes, nrPerPage, page
     
 }
 
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
+});
+
+elements.paginationButonsContainer.addEventListener('click', e => {
+    if(e.target.className !== 'results__pages') {
+        const btn = e.target.closest('.btn-inline');
+        if(btn) {
+            searchView.clearSearchedRecipes();
+            searchView.renderRecipes(state.search.recipes, 10, btn.dataset.goto);
+        }
+    }
 });

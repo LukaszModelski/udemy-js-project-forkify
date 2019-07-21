@@ -8,6 +8,7 @@ export const clearInput = () => {
 
 export const clearSearchedRecipes = () => {
     elements.searchResultList.innerHTML = '';
+    elements.paginationButonsContainer.innerHTML = '';
 }
 
 const limitRecipeTitle = (title, limit = 17) => {
@@ -24,8 +25,36 @@ const limitRecipeTitle = (title, limit = 17) => {
     return title;
 }
 
+const renderPaginationButtons = (page, nrPerPage, nrOfRecipes) => {
+    const nrOfPages = Math.ceil(nrOfRecipes / nrPerPage);
+    page = parseInt(page);
+    const prevButton = `
+        <button class="btn-inline results__btn--prev" data-goto="${page - 1}">
+            <span>Page ${page - 1}</span>
+            <svg class="search__icon">
+                <use href="img/icons.svg#icon-triangle-left"></use>
+            </svg>
+        </button>
+    `;
+    const nextButton = `
+        <button class="btn-inline results__btn--next" data-goto="${page + 1}">
+            <span>Page ${page + 1}</span>
+            <svg class="search__icon">
+                <use href="img/icons.svg#icon-triangle-right"></use>
+            </svg>
+        </button>
+    `;
+    if(page === 1 && nrOfPages > 1) {
+        elements.paginationButonsContainer.insertAdjacentHTML('beforeend', nextButton);
+    } else if (page === nrOfPages) {
+        elements.paginationButonsContainer.insertAdjacentHTML('beforeend', prevButton);
+    } else {
+        const buttons = prevButton + nextButton;
+        elements.paginationButonsContainer.insertAdjacentHTML('beforeend', buttons);
+    }
+}
+
 const renderSingleRecipe = recipe => {
-    // console.log('test');
     const markup = `
         <li>
             <a class="results__link" href="#${recipe.recipe_id}">
@@ -42,8 +71,9 @@ const renderSingleRecipe = recipe => {
     elements.searchResultList.insertAdjacentHTML('beforeend', markup);
 }
 
-export const renderRecipes = recipes => {
-    recipes.forEach(renderSingleRecipe); // renderSingleRecipe is a callback function in this case. So every single element from forEach loop will be automaticaly passed to the function.
+export const renderRecipes = (recipes, nrPerPage, page) => {
+    recipes.slice(0 + (page-1) * nrPerPage, nrPerPage * page).forEach(renderSingleRecipe); // renderSingleRecipe is a callback function in this case. So every single element from forEach loop will be automaticaly passed to the function.
+    renderPaginationButtons(page, nrPerPage, recipes.length);
 }
 
 export const rederSpinner = container => {
@@ -60,6 +90,5 @@ export const rederSpinner = container => {
 
 export const clearSpinner = container => {
     const spinner = document.querySelector('.' + container.className + ' .loader');
-    console.log(spinner);
     container.removeChild(spinner);
 }
