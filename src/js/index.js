@@ -1,10 +1,13 @@
-import Search from './models/Search'
-import * as searchView from './views/searchView'
-import { elements } from './views/base'
+import Search from './models/Search';
+import Recipe from './models/Recipe';
+import * as searchView from './views/searchView';
+import { elements } from './views/base';
 
 // state of app
 const state = {}
 
+
+// SEARCH CONTROLLER
 const controlSearch = async () => {
     
     // get query from view TODO
@@ -52,3 +55,8 @@ elements.paginationButonsContainer.addEventListener('click', e => {
         }
     }
 });
+
+// RECIPE CONTROLLER
+const rec = new Recipe('1b460b');
+rec.getRecipe();
+console.log(rec);
